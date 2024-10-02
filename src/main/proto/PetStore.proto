@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+option java_package = "com.example.petstoremonolithique.Entities";
+option java_outer_classname = "PetStoreGenerated";
+option optimize_for = SPEED;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";  // To use google.protobuf.Empty
+
+
+message GrpcOrder {
+	 sint64 id = 1;
+	 sint64 petId = 2;
+	 sint32 quantity = 3;
+	 google.protobuf.Timestamp shipDate = 4;
+	enum GrpcOrderStatus {
+		Placed = 0;
+		Processing = 1;
+		Shipped = 2;
+	}
+
+	 GrpcOrderStatus status = 5;
+	 bool complete = 6;
+}
+
+message GrpcOrders {
+    repeated GrpcOrder grpcOrder = 1;
+}
+
+message OrderIdRequest {
+    sint64 id = 1;
+}
+
+service PetStore {
+    rpc getOrders(google.protobuf.Empty) returns (GrpcOrders);
+    rpc getOrder(OrderIdRequest) returns (GrpcOrder);
+    rpc addOrder(GrpcOrder) returns (GrpcOrder);
+    rpc updateOrder(GrpcOrder) returns (GrpcOrder);
+    rpc deleteOrder(OrderIdRequest) returns (google.protobuf.Empty);
+}
+
+message GrpcInventoryLine {
+	 sint64 id = 1;
+	enum GrpcPetStatus {
+		Available = 0;
+		Pending = 1;
+		Sold = 2;
+	}
+
+	 GrpcPetStatus status = 2;
+	 sint32 count = 3;
+}
+
+message GrpcInventoryLines {
+	repeated GrpcInventoryLine grpcInventoryLine = 1;
+}
+
+message GrpcPet {
+	 sint64 id = 1;
+	 string name = 2;
+	enum GrpcPetCategory {
+		Dog = 0;
+		Cat = 1;
+		Bunny = 2;
+	}
+
+	 GrpcPetCategory category = 3;
+	repeated string photoUrls = 4;
+	 string tags = 5;
+	enum GrpcPetStatus {
+		Available = 0;
+		Pending = 1;
+		Sold = 2;
+	}
+
+	 GrpcPetStatus status = 6;
+}
+
+message GrpcPets {
+	repeated GrpcPet grpcPet = 1;
+}
+
+message GrpcPetPhoto {
+	 sint64 id = 1;
+	 sint64 petID = 2;
+	 string metaData = 3;
+	 bytes fileData = 4;
+}
+
+message GrpcPetPhotos {
+	repeated GrpcPetPhoto grpcPetPhoto = 1;
+}
+
+message GrpcUser {
+	 sint64 id = 1;
+	 string username = 2;
+	 string firstname = 3;
+	 string lastname = 4;
+	 string email = 5;
+	 string passwordHash = 6;
+	 string salt = 7;
+	 string phone = 8;
+	enum GrpcUserStatus {
+		Active = 0;
+		Inactive = 1;
+	}
+
+	 GrpcUserStatus status = 9;
+}
+
+message GrpcUsers {
+	repeated GrpcUser grpcUser = 1;
+}
+
